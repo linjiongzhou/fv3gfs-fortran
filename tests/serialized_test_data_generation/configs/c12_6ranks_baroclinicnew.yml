@@ -102,6 +102,7 @@ namelist:
     print_memory_usage: false
   fv_core_nml:
     a_imp: 1.0
+    adiabatic: true
     adjust_dry_mass: false
     beta: 0.0
     consv_am: false
