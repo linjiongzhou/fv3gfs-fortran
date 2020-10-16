@@ -684,7 +684,7 @@ contains
    !!! GT4PY_DEV --> TODO - remove this, only used for fv3core validation!!!
    if (first_call) then
      first_call = .false.
-     Atm(n)%q(:,:,:,sphum) = 0.0
+     Atm(n)%q(:,:,:,sphum) = 1.e-9
    end if
 
    do psc=1,abs(p_split)
@@ -1557,8 +1557,7 @@ contains
 !SJL: perform vertical filling to fix the negative humidity if the SAS convection scheme is used
 !     This call may be commented out if RAS or other positivity-preserving CPS is used.
      blen = Atm_block%blksz(nb)
-     !!! GT4PY_DEV --> TODO - below has been commented out for fv3core validation!!!
-     !call fill_gfs(blen, npz, IPD_Data(nb)%Statein%prsi, IPD_Data(nb)%Stateout%gq0, 1.e-9_kind_phys)
+     call fill_gfs(blen, npz, IPD_Data(nb)%Statein%prsi, IPD_Data(nb)%Stateout%gq0, 1.e-9_kind_phys)
 
      do k = 1, npz
            if(flip_vc) then
