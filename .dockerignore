@@ -4,3 +4,6 @@ tests/pytest/output/**
 *.so
 fv3.exe
 *.tmp.f90
+venv
+rundir
+coverage_*
