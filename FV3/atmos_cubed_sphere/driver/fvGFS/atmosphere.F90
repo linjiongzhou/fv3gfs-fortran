@@ -646,6 +646,7 @@ contains
    type(time_type),intent(in) :: Time
    integer :: n, psc, atmos_time_step
    integer :: k, w_diff, nt_dyn, n_split_loc, seconds, days
+   logical, save :: first_call = .true.
 
    type(time_type) :: atmos_time
    !$ser verbatim integer :: mpi_rank,ier
@@ -679,6 +680,12 @@ contains
      call read_new_bc_data(Atm(n), Time, Time_step_atmos, p_split, &
                            isd, ied, jsd, jed )
    endif
+
+   !!! GT4PY_DEV --> TODO - remove this, only used for fv3core validation!!!
+   if (first_call) then
+     first_call = .false.
+     Atm(n)%q(:,:,:,sphum) = 0.0
+   end if
 
    do psc=1,abs(p_split)
      !$ser verbatim if (psc == abs(p_split) .and. a_step == 1) then                    
@@ -1550,7 +1557,8 @@ contains
 !SJL: perform vertical filling to fix the negative humidity if the SAS convection scheme is used
 !     This call may be commented out if RAS or other positivity-preserving CPS is used.
      blen = Atm_block%blksz(nb)
-     call fill_gfs(blen, npz, IPD_Data(nb)%Statein%prsi, IPD_Data(nb)%Stateout%gq0, 1.e-9_kind_phys)
+     !!! GT4PY_DEV --> TODO - below has been commented out for fv3core validation!!!
+     !call fill_gfs(blen, npz, IPD_Data(nb)%Statein%prsi, IPD_Data(nb)%Stateout%gq0, 1.e-9_kind_phys)
 
      do k = 1, npz
            if(flip_vc) then
